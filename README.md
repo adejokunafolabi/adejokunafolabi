@@ -1,4 +1,4 @@
-- 👋 Hi, I’m @adejokunafolabi
+- 👋 Hi, I’m Kingsonn
 - 👀 I’m interested in tech
 - 🌱 I’m currently learning HTML,CSS and JavaScript
 - 💞️ I’m looking to collaborate on web projects

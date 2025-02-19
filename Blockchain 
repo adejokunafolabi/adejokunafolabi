@@ -1,0 +1,51 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract WordScrambleGame {
+    struct Word {
+        string original;
+        string scrambled;
+    }
+
+    Word[] private words;
+    mapping(address => uint256) public playerScores;
+    mapping(address => uint256) public currentWordIndex;
+
+    constructor() {
+        // Initialize with some words
+        words.push(Word("solidity", "tdsiyoli"));
+        words.push(Word("blockchain", "ihckbalcon"));
+        words.push(Word("ethereum", "tmuehere"));
+        words.push(Word("smart", "artsM"));
+        words.push(Word("contract", "rnctacto"));
+
+        // Shuffle logic should be done off-chain for security reasons
+    }
+
+    function getScrambledWord(address player) public view returns (string memory) {
+        uint256 index = currentWordIndex[player];
+        require(index < words.length, "No more words available");
+        return words[index].scrambled;
+    }
+
+    function submitGuess(string memory guess) public returns (bool) {
+        uint256 index = currentWordIndex[msg.sender];
+        require(index < words.length, "No more words available");
+
+        if (keccak256(abi.encodePacked(guess)) == keccak256(abi.encodePacked(words[index].original))) {
+            playerScores[msg.sender]++;
+            currentWordIndex[msg.sender]++;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function getPlayerScore(address player) public view returns (uint256) {
+        return playerScores[player];
+    }
+
+    function hasMoreWords(address player) public view returns (bool) {
+        return currentWordIndex[player] < words.length;
+    }
+}
